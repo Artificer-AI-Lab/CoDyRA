@@ -1,4 +1,4 @@
-# CoDyRA: Continual Learning with Adaptively Optimized Rank
+# CoDyRA: Continual Learning with Adaptively Optimized (Minized) Rank
 
 [![arXiv](https://img.shields.io/badge/arXiv-2412.01004-b31b1b.svg)](https://arxiv.org/abs/2412.01004)
 
