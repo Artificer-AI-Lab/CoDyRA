@@ -17,8 +17,8 @@ Motivated by this, we propose Continual Dynamic Rank-Selective LoRA (CoDyRA), wh
 
 ## Key Takeaways from Analyses
 - **Takeaway 1:** Instead of manual or fixed LoRA placement at specific parameters of the PTM like previous methods, we apply LoRA to all weights and optimize for an adaptive configuration.
-- **Takeaway 2:** A $\color{purple}{\texttt{plasticity}}$–$\color{green}{\texttt{stability}}$ **balance** exists and associates with LoRA rank ($\color{purple}{\texttt{high}}$ vs. $\color{green}{\texttt{low}}$), which can be adaptively achieved by jointly $\color{purple}{\texttt{optimizing the task objective}}$ and $\color{green}{\texttt{minimizing LoRA ranks}}$.
-- **Takeaway 3:** The $\color{purple}{\texttt{learning}}$–$\color{green}{\texttt{forgetting}}$ balance point tied to rank varies across modules and tasks, necessitating adaptive optimization.
+- **Takeaway 2:** A $\color{purple}{\texttt{plasticity}}$ – $\color{green}{\texttt{stability}}$ **balance** exists and associates with LoRA rank ($\color{purple}{\texttt{high}}$ vs. $\color{green}{\texttt{low}}$), which can be adaptively achieved by jointly $\color{purple}{\texttt{optimizing the task objective}}$ and $\color{green}{\texttt{minimizing LoRA ranks}}$.
+- **Takeaway 3:** The $\color{purple}{\texttt{learning}}$ – $\color{green}{\texttt{forgetting}}$ balance point tied to rank varies across modules and tasks, necessitating adaptive optimization.
 - (See more details in the [paper](https://arxiv.org/abs/2412.01004).)
 
 ## Overview of CoDyRA Methodology
