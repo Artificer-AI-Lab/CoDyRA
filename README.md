@@ -1,31 +1,45 @@
-# CoDyRA: Continual Learning with Adaptively Optimized (Minimized) Rank
+# Take Only What You Need: Adaptive Rank Minimization as Forgetting Regularizer in Continual Learning
 
 [![arXiv](https://img.shields.io/badge/arXiv-2412.01004-b31b1b.svg)](https://arxiv.org/abs/2412.01004)
 
-> Official implementation of **Adaptive Rank, Reduced Forgetting: Knowledge Retention in Continual Learning Vision-Language Models with Dynamic Rank-Selective LoRA** (CoDyRA).
-> 
+> Official implementation of **CoDyRA**.
+>
 > [Haodong Lu](https://jeff024.github.io/), Chongyang Zhao, Jason Xue, Lina Yao, Kristen Moore, [Dong Gong](https://donggong1.github.io/)
 
 ---
 
+## TL;DR
+Low-rank adaptation serves as an implicit forgetting regularizer in continual learning.
+
 ## Abstract
-Continual learning (CL) aims to accumulate knowledge from sequential tasks without catastrophic forgetting. Vision–language models like CLIP, with strong generalization, are widely used for CL. Existing methods often adapt isolated PTM components, adding inference complexity and limiting PTM improvement, or rely on replay, stored information, or assumptions, incurring high costs and limited applicability. To advance models as continual learners, we explore CL via natural, efficient PTM updates instead of complex task-specific additions. 
 
-We thus study continual low-rank learning and systematically analyze how LoRA ranks and placements affect $\color{purple}\text{learning}$ and $\color{green}{\text{forgetting}}$. We find that a relatively $\color{purple}{\text{higher-rank}}$ LoRA improves task learning (i.e., $\color{purple}{\textit{plasticity}}$) but increases forgetting, while a relatively $\color{green}{\text{lower-rank}}$ LoRA reduces forgetting (i.e., $\color{green}{\textit{stability}}$) but limits adaptation. Crucially, we find a plasticity–stability balance tied to rank across parameters and tasks, with moderately small ranks maximizing CL benefits. 
+The central tension in continual learning (CL) is the trade-off between *plasticity* (acquiring new knowledge) and *stability* (retaining prior knowledge). We study how a pre-trained backbone can be continually updated to absorb new knowledge while preserving existing capabilities, via **capacity control**: regulating the **effective rank** of each parameter update, a per-step quantity directly controllable inside a LoRA update.
 
-Motivated by this, we propose Continual Dynamic Rank-Selective LoRA (CoDyRA), which continually updates PTMs with LoRA adapters of adaptively optimized rank. While the new-task objective drives learning, CoDyRA adaptively minimizes ranks with $\color{green}{\text{sparsity-promoting regularization}}$ to reduce interference and forgetting, achieving a plasticity–stability balance tailored to different parameters and tasks. Adaptively selected and minimized LoRA ranks keep the updated model closer to its previous state while learning new tasks. CoDyRA enables efficient CL as a sequence of LoRA-based tasks without storing past data, task information, or relying on assumptions. It preserves the original model architecture and deployment pipeline, adding no inference overhead. Extensive experiments show CoDyRA improves new representations while retaining old knowledge, achieving state-of-the-art results.
+A controlled probe of LoRA rank and placement across modules and tasks reveals a consistent trade-off, with a moderate-rank sweet spot that varies by placement and task, leaving no universally optimal fixed rank; a formal bound shows forgetting grows with rank.
+
+Building on these findings, we propose **Co**ntinual **Dy**namic **R**ank-Selective LoR**A** (**CoDyRA**), which jointly trains each LoRA update with adaptive rank minimization via sparsity-promoting regularization on per-component importance weights. The supervised objective drives $\color{purple}{\text{plasticity}}$; rank minimization regularizes $\color{green}{\text{forgetting}}$.
+
+We show that adaptive rank minimization serves as a forgetting regularizer in the CL regime, protecting general capability and prior-task knowledge simultaneously by controlling forgetting against the current model state. Across MTIL, X-TAIL, and TRACE (CLIP, LLaMA, Gemma), CoDyRA matches or exceeds prior CL methods on learning accuracy while achieving the lowest forgetting, balancing plasticity and stability.
 
 ## Key Takeaways from Analyses
-- **Takeaway 1:** Instead of manual or fixed LoRA placement at specific parameters of the PTM like previous methods, we apply LoRA to all weights and optimize for an adaptive configuration.
-- **Takeaway 2:** A $\color{purple}{\text{plasticity}}$ – $\color{green}{\text{stability}}$ balance exists and associates with LoRA rank ($\color{purple}{\text{high}}$ vs. $\color{green}{\text{low}}$), which can be adaptively achieved by jointly $\color{purple}{\text{optimizing the task objective}}$ and $\color{green}{\text{minimizing LoRA ranks}}$.
-- **Takeaway 3:** The $\color{purple}{\text{learning}}$ – $\color{green}{\text{forgetting}}$ balance point tied to rank varies across modules and tasks, necessitating adaptive optimization.
+
+- **Takeaway 1:** LoRA placement is itself a $\color{purple}{\text{plasticity}}$–$\color{green}{\text{stability}}$ lever; no single fixed choice dominates.
+- **Takeaway 2:** The $\color{purple}{\text{plasticity}}$–$\color{green}{\text{stability}}$ balance is governed by LoRA rank: $\color{purple}{\text{high rank}}$ favors plasticity, $\color{green}{\text{low rank}}$ favors stability, with a sweet spot at moderate rank.
+- **Takeaway 3:** The sweet-spot rank is not universal: its location varies systematically by module and by downstream task.
 - (See more details in the [paper](https://arxiv.org/abs/2412.01004).)
 
 ## Overview of CoDyRA Methodology
 
 ![CoDyRA overview diagram](figs/overview.png)
 
-We propose a dynamic rank-selection LoRA, enabling each pre-trained weight matrix to adaptively add necessary ranks for downstream adaptation while retaining pre-trained capabilities. After each task, dynamic rank updates are merged into the pre-trained weights with no inference overhead.
+CoDyRA introduces a dynamic rank-selection LoRA, enabling each pre-trained weight matrix to adaptively retain only the necessary ranks for downstream adaptation while preserving pre-trained capabilities. After each task, the rank-pruned LoRA updates merge into the backbone, adding no inference overhead.
+
+**Key properties:**
+- ✅ No past data, task IDs, or per-task modules — operates under a strict CL regime
+- ✅ No inference overhead — updates merge into the backbone
+- ✅ A single rank-based criterion protects $\color{green}{\text{general (pretrained) capability}}$ *and* $\color{green}{\text{prior-task knowledge}}$
+- ✅ Fewest trainable parameters among baselines (4.4M vs 60M–130M)
+- ✅ Lowest Backward Transfer (BWT 1.87%) across replay, modular, orthogonal-subspace, and fixed-rank LoRA baselines
 
 ## Quick Start
 
@@ -41,13 +55,12 @@ pip install -r requirements.txt
 
 ### 2. Data
 - Set `--data_dir` to the root directory that should hold all benchmarks (Aircraft, Caltech101, DTD, EuroSAT, Oxford Flowers, Food-101, MNIST, Oxford Pets, Stanford Cars, SUN397).
-- Please refer to the following guides for setting up datasets:
-[CoOp](https://github.com/KaiyangZhou/CoOp/blob/main/DATASETS.md)
+- Please refer to the following guide for setting up datasets: [CoOp](https://github.com/KaiyangZhou/CoOp/blob/main/DATASETS.md)
 
 
 ## Running CoDyRA
 
-```
+```bash
 bash runner_codyra.sh
 ```
 
@@ -58,7 +71,7 @@ CoDyRA is released under the Apache License 2.0. See [`LICENSE`](LICENSE) for de
 
 ```bibtex
 @article{lu2024adaptive,
-  title   = {Adaptive Rank, Reduced Forgetting: Knowledge Retention in Continual Learning Vision-Language Models with Dynamic Rank-Selective LoRA},
+  title   = {Take Only What You Need: Adaptive Rank Minimization as Forgetting Regularizer in Continual Learning},
   author  = {Lu, Haodong and Zhao, Chongyang and Xue, Jason and Yao, Lina and Moore, Kristen and Gong, Dong},
   journal = {arXiv preprint arXiv:2412.01004},
   year    = {2024}
