@@ -23,8 +23,8 @@ We show that adaptive rank minimization serves as a forgetting regularizer in th
 
 ## Key Takeaways from Analyses
 
-- **Takeaway 1:** LoRA placement is itself a $\color{purple}{\text{plasticity}}$–$\color{green}{\text{stability}}$ lever; no single fixed choice dominates.
-- **Takeaway 2:** The $\color{purple}{\text{plasticity}}$–$\color{green}{\text{stability}}$ balance is governed by LoRA rank: $\color{purple}{\text{high rank}}$ favors plasticity, $\color{green}{\text{low rank}}$ favors stability, with a sweet spot at moderate rank.
+- **Takeaway 1:** LoRA placement is itself a $\color{purple}{\text{plasticity}}$ – $\color{green}{\text{stability}}$ lever; no single fixed choice dominates.
+- **Takeaway 2:** The $\color{purple}{\text{plasticity}}$ – $\color{green}{\text{stability}}$ balance is governed by LoRA rank: $\color{purple}{\text{high rank}}$ favors plasticity, $\color{green}{\text{low rank}}$ favors stability, with a sweet spot at moderate rank.
 - **Takeaway 3:** The sweet-spot rank is not universal: its location varies systematically by module and by downstream task.
 - (See more details in the [paper](https://arxiv.org/abs/2412.01004).)
 
