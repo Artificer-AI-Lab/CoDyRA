@@ -1,0 +1,83 @@
+/* CoDyRA project page — adapted from the Nerfies template.
+   Accent language follows the paper: purple = plasticity, green = stability. */
+
+:root {
+  --codyra-plasticity: #7c3aed;   /* purple */
+  --codyra-plasticity-dark: #6d28d9;
+  --codyra-stability: #15803d;     /* green  */
+  --codyra-ink: #1f2937;
+  --codyra-muted: #5a5a5a;
+  --codyra-line: #e8e8e8;
+}
+
+body { font-family: 'Noto Sans', sans-serif; color: var(--codyra-ink); }
+
+.teaser .hero-body { padding-top: 0; padding-bottom: 2rem; }
+.teaser { font-family: 'Google Sans', sans-serif; }
+
+.publication-title { font-family: 'Google Sans', sans-serif; }
+.publication-authors { font-family: 'Google Sans', sans-serif; }
+.publication-authors a { color: var(--codyra-plasticity) !important; }
+.publication-authors a:hover { text-decoration: underline; }
+.author-block { display: inline-block; }
+.publication-body img { max-width: 100%; height: auto; }
+
+.link-block a { margin-top: 5px; margin-bottom: 5px; }
+.footer .icon-link { font-size: 25px; color: #000; }
+
+/* Related-works strip */
+.codyra-related-works { font-family: 'Google Sans', 'Noto Sans', sans-serif; font-size: 0.9rem; line-height: 1.55; color: var(--codyra-muted); }
+.codyra-related-works-links { display: block; margin-top: 0.35rem; }
+.codyra-related-works-links a { color: var(--codyra-plasticity); margin: 0 0.35rem; display: inline-flex; align-items: center; gap: 0.2rem; vertical-align: middle; }
+.codyra-related-works-links a:hover { text-decoration: underline; }
+.codyra-related-works .codyra-related-icon { font-size: 0.72rem; width: 0.95rem; height: 0.95rem; display: inline-flex; align-items: center; justify-content: center; }
+
+/* Semantic accents */
+.codyra-plas { color: var(--codyra-plasticity); font-weight: 600; }
+.codyra-stab { color: var(--codyra-stability); font-weight: 600; }
+
+/* Display equations */
+.codyra-eqn { padding: 0.9rem 0.75rem; border-radius: 8px; margin: 1rem 0; max-width: 100%; overflow-x: visible; overflow-y: visible; background: #f6f5fb; border: 1px solid #eee6fb; }
+@media screen and (max-width: 768px) { .codyra-eqn { overflow-x: auto; -webkit-overflow-scrolling: touch; } }
+
+/* Captions */
+.codyra-caption { font-family: 'Google Sans', 'Noto Sans', sans-serif; font-size: 0.9375rem; line-height: 1.5; color: var(--codyra-muted); margin-top: 0.625rem; margin-bottom: 0; letter-spacing: 0.01em; }
+.codyra-caption em { font-style: italic; color: #444; }
+
+.codyra-figure { margin: 1rem auto 0; max-width: 960px; }
+.codyra-figure img { border-radius: 8px; border: 1px solid var(--codyra-line); background: #fff; }
+.codyra-figure figcaption.codyra-caption { text-align: left; max-width: 960px; margin-left: auto; margin-right: auto; }
+
+/* Result tables */
+.codyra-paper-table th, .codyra-paper-table td { vertical-align: middle; }
+.codyra-paper-table tr.codyra-row-highlight > th,
+.codyra-paper-table tr.codyra-row-highlight > td { background-color: rgba(124, 58, 237, 0.13) !important; }
+.codyra-paper-table tr.codyra-row-highlight > th:first-child { box-shadow: inset 3px 0 0 var(--codyra-plasticity); }
+/* three-level grouping: metric band (neutral) > method group (blue) > family (light) */
+.codyra-paper-table tr.codyra-metric-row > th { background: #e5e9ef; color: #334155; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.72rem; }
+.codyra-paper-table tr.codyra-group-row > th  { background: #e7eef7; color: #2f5c8f; font-weight: 700; font-size: 0.8rem; padding-left: 0.7rem; }
+.codyra-paper-table tr.codyra-family-row > th { background: #fafbfc; color: #94a3b8; font-style: italic; font-weight: 600; font-size: 0.76rem; padding-left: 1.6rem; }
+
+/* Takeaway cards (one per evidence row) */
+.codyra-take { border: 1px solid var(--codyra-line); border-top: 3px solid var(--codyra-plasticity); border-radius: 10px; padding: 1rem 1.15rem; background: #fff; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05); height: 100%; }
+.codyra-take h4 { font-family: 'Google Sans', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--codyra-plasticity); margin-bottom: 0.4rem; }
+.codyra-take p { font-size: 0.96rem; line-height: 1.5; margin: 0; }
+.codyra-evidence-row { align-items: center; margin-bottom: 0.5rem; }
+.codyra-evidence-row .codyra-figure { margin-top: 0; }
+
+/* Highlights band (method properties, moved up) */
+.codyra-highlights { display: grid; gap: 1rem; grid-template-columns: repeat(3, 1fr); margin-top: 0.5rem; }
+@media screen and (max-width: 768px) { .codyra-highlights { grid-template-columns: 1fr; } }
+.codyra-hl { border: 1px solid var(--codyra-line); border-left: 4px solid #0891b2; border-radius: 10px; padding: 0.9rem 1.05rem; background: #fff; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05); }
+.codyra-hl .codyra-hl-tag { font-weight: 800; font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; }
+/* vivid, distinct accent per highlight card (not purple/green, which are reserved) */
+.codyra-highlights > .codyra-hl:nth-child(1) { border-left-color: #0891b2; background: #ecfeff; }
+.codyra-highlights > .codyra-hl:nth-child(1) .codyra-hl-tag { color: #0e7490; }
+.codyra-highlights > .codyra-hl:nth-child(2) { border-left-color: #ea580c; background: #fff7ed; }
+.codyra-highlights > .codyra-hl:nth-child(2) .codyra-hl-tag { color: #c2410c; }
+.codyra-highlights > .codyra-hl:nth-child(3) { border-left-color: #e11d48; background: #fff1f3; }
+.codyra-highlights > .codyra-hl:nth-child(3) .codyra-hl-tag { color: #be123c; }
+.codyra-hl p { margin: 0.3rem 0 0; font-size: 0.94rem; line-height: 1.45; }
+
+/* Plot captions */
+.codyra-plot-title { font-family: 'Google Sans', sans-serif; font-weight: 700; font-size: 0.95rem; color: var(--codyra-ink); text-align: center; margin-bottom: 0.25rem; }
